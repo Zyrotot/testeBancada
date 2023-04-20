@@ -1,14 +1,13 @@
 #include <Arduino.h>
 
-#define dirPin 2 // classifica pino que define a direção do motor
-#define stepPin 3
-#define stepsPerRevolution 1600
-#define stepDelay 100
+#define dirPin 2 // define pino de direção do motor
+#define stepPin 3 // define pino de step do motor
+#define stepsPerRevolution 1600 // define quantidades de step por volta
+#define stepDelay 100 // define delay entre steps
 
 void setup() {
-
-  pinMode(stepPin, OUTPUT);
-  pinMode(dirPin, OUTPUT);
+  pinMode(stepPin, OUTPUT); // define o pino de step como saida
+  pinMode(dirPin, OUTPUT); // define o pino de direção como saida
 }
 
 void loop() {
