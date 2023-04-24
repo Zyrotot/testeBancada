@@ -10,8 +10,8 @@
 
 // Motor eixo Y
 
-#define XdirPin 32 // define pino de direção do motor
-#define XstepPin 33 // define pino de step do motor
+#define YdirPin 32 // define pino de direção do motor
+#define YstepPin 33 // define pino de step do motor
 
 // Motor eixo Z
 
@@ -23,6 +23,7 @@
 #define tempSensor 21
 #define fluxoSensor 19
 #define portaSensor 4
+#define pinoExaustor 5
 
 void controlMotor(int dirPin, int stepPin) {
   pinMode(stepPin, OUTPUT); // define o pino de step como saida
@@ -54,13 +55,18 @@ int readPin(int pin) {
   return digitalRead(pin); // return the read value of the pin
 }
 
+void setOutput(int pin) {
+  pinMode(pin,OUTPUT);
+  digitalWrite(pin, HIGH);
+}
 
 void setup() {
   controlMotor(XdirPin, XstepPin);
   controlMotor(YdirPin, YstepPin);
   controlMotor(ZdirPin, ZstepPin);
+  Serial.begin(9600);
 }
 
 void loop() {
-  // do nothing
+
 }
