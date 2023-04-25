@@ -1,7 +1,12 @@
 #include <Arduino.h>
+#include <OneWire.h>  
+#include <DallasTemperature.h>
 
 #define stepsPerRevolution 1600 // define quantidades de step por volta
 #define stepDelay 100 // define delay entre steps
+
+double flow; //Liters of passing water volume
+unsigned long pulse_freq;
 
 // Motor eixo X
 
@@ -23,7 +28,11 @@
 #define tempSensor 21
 #define fluxoSensor 19
 #define portaSensor 4
-#define pinoExaustor 5
+#define pinoExaustor 5 
+#define sensorNivel 39 
+
+OneWire oneWire(tempSensor);
+DallasTemperature sensors(&oneWire);
 
 void controlMotor(int dirPin, int stepPin) {
   pinMode(stepPin, OUTPUT); // define o pino de step como saida
@@ -55,18 +64,43 @@ int readPin(int pin) {
   return digitalRead(pin); // return the read value of the pin
 }
 
+int readAnalog(int pin) {
+  return analogRead(pin);
+}
+
 void setOutput(int pin) {
   pinMode(pin,OUTPUT);
-  digitalWrite(pin, HIGH);
+  digitalWrite(pin, HIGH);  
+}
+
+void pulse () // Interrupt function
+
+{
+  pulse_freq++;
 }
 
 void setup() {
-  controlMotor(XdirPin, XstepPin);
-  controlMotor(YdirPin, YstepPin);
-  controlMotor(ZdirPin, ZstepPin);
+  // setOutput(pinoExaustor);
+
+  pinMode(fluxoSensor, INPUT);
+  attachInterrupt(0, pulse, RISING); // Setup Interrupt
+
+  // sensors.begin();
+  // controlMotor(XdirPin, XstepPin);
+  // controlMotor(YdirPin, YstepPin);
+  // controlMotor(ZdirPin, ZstepPin);
   Serial.begin(9600);
 }
 
 void loop() {
+  // Serial.println(readPin(portaSensor));
+  // Serial.println(readPin(sensorNivel));
 
+  flow = .00225 * pulse_freq;
+  Serial.print(flow, DEC);
+  Serial.println(" L");
+  
+  // sensors.requestTemperatures();
+  // Serial.println(sensors.getTempCByIndex(0));
+  delay(500);
 }
